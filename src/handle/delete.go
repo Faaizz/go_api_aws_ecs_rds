@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -13,16 +12,13 @@ import (
 
 func BookDelete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	idStr := ps.ByName("id")
-	if idStr == "" {
-		http.Error(w, "id is required", http.StatusBadRequest)
-		return
-	}
-	idUint64, err := strconv.ParseUint(idStr, 10, 32)
+	id, err := sanitizeID(idStr)
 	if err != nil {
-		http.Error(w, "id must be a valid integer", http.StatusBadRequest)
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	id := uint(idUint64)
+
 	err = controller.DeleteBook(id)
 	if err != nil {
 		log.Println(err)
@@ -30,5 +26,6 @@ func BookDelete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	fmt.Fprint(w, "Book deleted!\n")
+	w = addHeaders(w)
+	fmt.Fprint(w, "{}")
 }

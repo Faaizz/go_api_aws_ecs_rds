@@ -1,7 +1,7 @@
 package handle
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -18,5 +18,6 @@ func BookIndex(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", bs)
+	w = addHeaders(w)
+	json.NewEncoder(w).Encode(bs)
 }

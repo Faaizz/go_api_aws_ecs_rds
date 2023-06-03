@@ -28,9 +28,8 @@ curl -X GET \
 # Create book
 curl -X POST \
   -u "admin:password" \
-  -F "title=The Gods are to blame" \
-  -F "author=Max Mustermann" \
-  -F "year=1992" \
+  -H "Content-Type: application/json" \
+  --data '{"title":"The Power of Geography","author":"Tim Marshall","year":2009}' \
   http://localhost:8080/book
 
 # Read book
@@ -41,9 +40,8 @@ curl -X GET \
 # Update book
 curl -X PUT \
   -u "admin:password" \
-  -F "title=The Gods are to blame" \
-  -F "author=John Doe" \
-  -F "year=1992" \
+  -H "Content-Type: application/json" \
+  --data '{"title":"The Gods are to blame","author":"John Doe","year":1992}' \
   http://localhost:8080/book/ID
 
 # Delete book

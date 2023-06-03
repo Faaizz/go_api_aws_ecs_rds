@@ -1,10 +1,9 @@
 package handle
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -13,16 +12,12 @@ import (
 
 func BookRead(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	idStr := ps.ByName("id")
-	if idStr == "" {
-		http.Error(w, "id is required", http.StatusBadRequest)
-		return
-	}
-	idUint64, err := strconv.ParseUint(idStr, 10, 32)
+	id, err := sanitizeID(idStr)
 	if err != nil {
-		http.Error(w, "id must be a valid integer", http.StatusBadRequest)
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	id := uint(idUint64)
 
 	book, err := controller.ReadBook(id)
 	if err != nil {
@@ -30,5 +25,7 @@ func BookRead(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, "could not read book", http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprintf(w, "Book: %+v\n", book)
+
+	w = addHeaders(w)
+	json.NewEncoder(w).Encode(book)
 }
