@@ -6,8 +6,11 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"github.com/faaizz/go_api_aws_ecs_rds/model"
 )
 
+//go:generate mockery --name IGormDB --structname MockIGormDB --outpkg controller_test --output . --filename mock_IGormDB_test.go
 type IGormDB interface {
 	AutoMigrate(dst ...interface{}) error
 	Find(dst interface{}, conds ...interface{}) *gorm.DB
@@ -17,6 +20,7 @@ type IGormDB interface {
 	Delete(dst interface{}, conds ...interface{}) *gorm.DB
 }
 
+//go:generate mockery --name IController --structname MockIController --outpkg handle_test --output ../handle --filename mock_IController_test.go
 type IController interface {
 	GetBooks() ([]model.Book, error)
 	CreateBook(title, author string, year int) (model.Book, error)

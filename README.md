@@ -2,6 +2,18 @@
 Golang API deployed on Amazon ECS with data persistence on Amazon RDS.
 
 
+## Testing
+### Generating Mocks
+```shell
+go generate ./...
+```
+### Running Tests
+To run tests:
+```shell
+go test -coverprofile=coverage.out ./...
+go tool cover -func=coverage.out
+```
+
 ## Usage
 ### Deploy Development Server
 ```shell
