@@ -11,7 +11,7 @@ import (
 )
 
 func BookIndex(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	bs, err := controller.GetBooks()
+	bs, err := controller.BC.GetBooks()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "could not get books", http.StatusInternalServerError)

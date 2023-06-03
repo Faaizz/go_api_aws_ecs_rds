@@ -19,7 +19,7 @@ func BookRead(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	book, err := controller.ReadBook(id)
+	book, err := controller.BC.ReadBook(id)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "could not read book", http.StatusInternalServerError)

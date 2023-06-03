@@ -8,7 +8,26 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+type IGormDB interface {
+	AutoMigrate(dst ...interface{}) error
+	Find(dst interface{}, conds ...interface{}) *gorm.DB
+	Create(dst interface{}) *gorm.DB
+	First(dst interface{}, conds ...interface{}) *gorm.DB
+	Save(dst interface{}) *gorm.DB
+	Delete(dst interface{}, conds ...interface{}) *gorm.DB
+}
+
+type IController interface {
+	GetBooks() ([]model.Book, error)
+	CreateBook(title, author string, year int) (model.Book, error)
+	ReadBook(id uint) (model.Book, error)
+	UpdateBook(id uint, title, author string, year int) (model.Book, error)
+	DeleteBook(id uint) error
+}
+
+var DB IGormDB
+var BC IController
+
 var dbHost string
 var dbPort string
 var dbUser string

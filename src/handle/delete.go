@@ -19,7 +19,7 @@ func BookDelete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	err = controller.DeleteBook(id)
+	err = controller.BC.DeleteBook(id)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "could not delete book", http.StatusInternalServerError)
