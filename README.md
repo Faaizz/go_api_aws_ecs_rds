@@ -10,6 +10,13 @@ cd src
 export BASIC_AUTH_USER="admin"
 export BASIC_AUTH_PASSWORD="password"
 
+export DB_USER="admin"
+export DB_PASSWORD="password"
+export DB_NAME="gorm"
+export DB_HOST="localhost"
+export DB_PORT="5432"
+export DB_SSLMODE="disable"
+
 go run .
 ```
 ### Client Requests
