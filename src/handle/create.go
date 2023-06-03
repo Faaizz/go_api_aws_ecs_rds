@@ -28,7 +28,7 @@ func BookCreate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	book, err := controller.CreateBook(br.Title, br.Author, br.Year)
+	book, err := controller.BC.CreateBook(br.Title, br.Author, br.Year)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "could not create book", http.StatusInternalServerError)
