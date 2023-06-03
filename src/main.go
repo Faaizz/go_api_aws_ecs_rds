@@ -22,12 +22,18 @@ func main() {
 	db.AutoMigrate(&model.Book{})
 	controller.DB = db
 
+	bc := controller.Book{}
+	controller.BC = &bc
+
+	apiPath := "/api/v1"
+	bookPath := apiPath + "/book"
+
 	router := httprouter.New()
-	router.GET("/book", handle.BookIndex)
-	router.POST("/book", middleware.BasicAuth(handle.BookCreate))
-	router.PUT("/book/:id", middleware.BasicAuth(handle.BookUpdate))
-	router.DELETE("/book/:id", middleware.BasicAuth(handle.BookDelete))
-	router.GET("/book/:id", middleware.BasicAuth(handle.BookRead))
+	router.GET(bookPath, handle.BookIndex)
+	router.POST(bookPath, middleware.BasicAuth(handle.BookCreate))
+	router.PUT(bookPath+"/:id", middleware.BasicAuth(handle.BookUpdate))
+	router.DELETE(bookPath+"/:id", middleware.BasicAuth(handle.BookDelete))
+	router.GET(bookPath+"/:id", middleware.BasicAuth(handle.BookRead))
 
 	port := os.Getenv("PORT")
 	if port == "" {
