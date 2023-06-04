@@ -25,10 +25,14 @@ func main() {
 	bc := controller.Book{}
 	controller.BC = &bc
 
-	apiPath := "/api/v1"
-	bookPath := apiPath + "/book"
-
 	router := httprouter.New()
+
+	apiPath := "/api/v1"
+
+	healthPath := apiPath + "/healthz"
+	router.GET(healthPath, handle.Health)
+
+	bookPath := apiPath + "/book"
 	router.GET(bookPath, handle.BookIndex)
 	router.POST(bookPath, middleware.BasicAuth(handle.BookCreate))
 	router.PUT(bookPath+"/:id", middleware.BasicAuth(handle.BookUpdate))
