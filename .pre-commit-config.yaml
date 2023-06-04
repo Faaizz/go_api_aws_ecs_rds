@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.77.0
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__.github/linters/.tflint.hcl
+      - id: terraform_docs
+        args:
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+  - repo: https://github.com/awslabs/git-secrets
+    rev: master
+    hooks:
+      - id: git-secrets
+        language: script
+        entry: 'git-secrets --pre_commit_hook'
