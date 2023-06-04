@@ -61,7 +61,7 @@ jobs:
       # Build and push image to ECR
       - name: Build and push image to ECR
         run: |
-          CONTAINER_IMAGE_TAG="${{ steps.get-latest-tag.outputs.tag }}"
+          CONTAINER_IMAGE_TAG="${{ steps.bump-semver.outputs.new_version }}"
 
           ./.github/scripts/build_and_push_ecr.sh ${GITHUB_WORKSPACE} ${AWS_REGION} ${AWS_ACCOUNT_ID} ${IMAGE_REPO_NAME} ${CONTAINER_IMAGE_TAG}
 
