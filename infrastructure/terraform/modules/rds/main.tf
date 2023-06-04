@@ -8,7 +8,7 @@ module "rds" {
   create_db_parameter_group = false
 
   engine               = "postgres"
-  engine_version       = "15.3"
+  engine_version       = "14"
   family               = "postgres14" # DB parameter group
   major_engine_version = "14"         # DB option group
   instance_class       = "db.t3.micro"
