@@ -33,32 +33,37 @@ go run .
 ```
 ### Client Requests
 ```shell
-export API_URL="http://localhost:8080/api/v1/book"
+export API_URL="http://localhost:8080/api/v1"
+export HEALTH_URL="${API_URL}/healthz"
+export BOOK_URL="${API_URL}/book"
+
+# Check health
+curl -X GET "${HEALTH_URL}"
 
 # List books
-curl -X GET "${API_URL}"
+curl -X GET "${BOOK_URL}"
 
 # Create book
 curl -X POST \
   -u "admin:password" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Power of Geography","author":"Tim Marshall","year":2009}' \
-  "${API_URL}"
+  "${BOOK_URL}"
 
 # Read book
 curl -X GET \
   -u "admin:password" \
-  "${API_URL}/ID"
+  "${BOOK_URL}/ID"
 
 # Update book
 curl -X PUT \
   -u "admin:password" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Gods are to blame","author":"John Doe","year":1992}' \
-  "${API_URL}/ID"
+  "${BOOK_URL}/ID"
 
 # Delete book
 curl -X DELETE \
   -u "admin:password" \
-  "${API_URL}/ID"
+  "${BOOK_URL}/ID"
 ```
