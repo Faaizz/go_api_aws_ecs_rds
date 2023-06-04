@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  name_prefix        = "ecs"
+  name               = "ecs"
   internal           = false
   load_balancer_type = "application"
   security_groups    = var.alb_security_groups
