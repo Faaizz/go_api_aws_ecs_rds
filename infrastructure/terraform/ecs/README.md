@@ -39,5 +39,5 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint_url"></a> [endpoint\_url](#output\_endpoint\_url) | The URL of the API |
+| <a name="output_api_url"></a> [api\_url](#output\_api\_url) | The URL of the API |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
