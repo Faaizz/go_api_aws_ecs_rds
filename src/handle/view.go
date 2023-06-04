@@ -14,7 +14,7 @@ var Port string
 
 func View(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	c := &http.Client{
-		Timeout: 25 * time.Second,
+		Timeout: 15 * time.Second,
 	}
 	req, err := c.Get(fmt.Sprintf("http://localhost:%s/api/v1/book", Port))
 	if err != nil {
