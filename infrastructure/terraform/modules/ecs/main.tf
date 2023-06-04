@@ -81,7 +81,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
           Name  = "DB_SSLMODE"
-          Value = "disable"
+          Value = "prefer"
         },
       ]
     }

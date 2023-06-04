@@ -1,4 +1,4 @@
-output "endpoint_url" {
+output "api_url" {
   description = "The URL of the API"
-  value       = "${module.ecs.alb_dns_name}/api/v1"
+  value       = "http://${module.ecs.alb_dns_name}/api/v1"
 }
