@@ -2,6 +2,13 @@
 Golang API deployed on Amazon ECS with data persistence on Amazon RDS.
 
 
+## Development Environment
+### Pre-Commit Hooks
+Install pre-commit hooks with:
+```shell
+pre-commit install
+```
+
 ## Testing
 ### Generating Mocks
 ```shell
