@@ -113,8 +113,12 @@ The [`Test source code`](./.github/workflows/go.yaml) workflow builds and tests 
 The [`Validate terraform code`](./.github/workflows/infra_validate.yaml) workflow validates terraform configurations and runs TFLint on each infrastructure module.
 The workflow requires the following GitHub actions secrets:
 - [ ] `AWS_IAM_ROLE_ARN_CI`
-- [ ] `AWS_IAM_ROLE_ARN_DEPLOY`
+- [ ] **`AWS_IAM_ROLE_ARN_DEPLOY`**
 - [ ] `AWS_ACCOUNT_ID`
 - [ ] `IMAGE_REPO_NAME`: Name of ECR repository for container images (provided as an output of the [`pre_deployment`](./infrastructure/terraform/pre_deployment/README.md) infrastructure module).
 - [ ] `BASIC_AUTH_USER`
 - [ ] `BASIC_AUTH_PASSWORD`
+
+### Build and Push Image to ECR
+[`Build and push image to ECR, deploy new task definition to ECS`](./.github/workflows/deploy.yaml) workflow is triggered whenever the source code changes.
+It builds, tags, and pushes a new docker image to ECR, and re-deploys the API with the new image.
