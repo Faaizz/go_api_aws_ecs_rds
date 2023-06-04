@@ -3,7 +3,7 @@ name: Build and push image to ECR, deploy new task definition to ECS
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'src/**'
 
