@@ -48,21 +48,6 @@ jobs:
           role-skip-session-tagging: true
           role-chaining: true
 
-      # Prepare Terraform Variables
-      #   if: ${{ github.event.pull_request.merged == true }}
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-
-      - name: Generate tfvars for ECS deployment
-        working-directory: 'infrastructure/terraform/ecs'
-        run: |
-          CONTAINER_IMAGE_TAG="${{ steps.get-latest-tag.outputs.tag }}"
-          CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
-
-          echo "basic_auth_password = \"${BASIC_AUTH_USER}\"" > terraform.tfvars
-          echo "basic_auth_user = \"${BASIC_AUTH_PASSWORD}\"" >> terraform.tfvars
-          echo "container_image_uri = \"${CONTAINER_IMAGE_URI}\"" >> terraform.tfvars
-
       # Terraform Validation
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -88,12 +73,7 @@ jobs:
 
       - name: Show version
         working-directory: ${{ matrix.dir }}
-        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --version
-
-      - name: Init TFLint
-        working-directory: ${{ matrix.dir }}
-        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --init
-
-      - name: Run TFLint
-        working-directory: ${{ matrix.dir }}
-        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" -f compact
+        run: |
+          tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --version
+          tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --init
+          tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" -f compact
