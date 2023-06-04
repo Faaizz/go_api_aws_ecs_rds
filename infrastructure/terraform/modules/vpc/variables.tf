@@ -11,3 +11,7 @@ variable "cidr" {
     error_message = "CIDR block must be in the form x.x.x.x/x"
   }
 }
+variable "container_port" {
+  description = "The port the container listens on"
+  type        = number
+}
