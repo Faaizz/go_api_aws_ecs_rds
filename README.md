@@ -17,7 +17,7 @@ go generate ./...
 ### Running Tests
 To run tests:
 ```shell
-go test -coverprofile=coverage.out ./...
+go test -v -coverprofile=coverage.out ./...
 go tool cover -func=coverage.out
 ```
 
@@ -49,12 +49,8 @@ export DB_SSLMODE="disable"
 
 go run .
 ```
-### Deploy Development Server (Docker)
-```shell 
-docker build -f .docker/Dockerfile -t go_api_aws_ecs_rds .
 
-docker run --rm -ti -e BASIC_AUTH_USER="admin" -e BASIC_AUTH_PASSWORD="password" -e DB_USER="admin" -e DB_PASSWORD="password" -e DB_NAME="gorm" -e DB_HOST="localhost" -e DB_PORT="5432" -e DB_SSLMODE="disable" go_api_aws_ecs_rds
-```
+## Usage
 ### Client Requests
 ```shell
 export API_URL="http://localhost:8080/api/v1"
@@ -91,3 +87,19 @@ curl -X DELETE \
   -u "admin:password" \
   "${BOOK_URL}/ID"
 ```
+
+## Infrastructure 
+### Architecture
+
+### Deployment Order
+The terraform infrastructure modules need to be deployed in the following order:
+1. [`pre_deployment`](./infrastructure/terraform/pre_deployment/README.md): S3 bucket and DynamoDB table for terraform backends, ECR repository for container images.
+2. [`vpc`](./infrastructure/terraform/vpc/README.md): VPC infrastructure and SGs.
+3. [`db`](./infrastructure/terraform/db/README.md): RDS PostgreSQL database.
+4. [`ecs`](./infrastructure/terraform/ecs/README.md): ECS cluster, service, and task definition, ALB for load balancing and SSL termination.
+
+
+## CI/CD
+### Source Code Build & Test
+The [`Test source code`](./.github/workflows/go.yaml) workflow builds and tests the source code on every PR.
+
