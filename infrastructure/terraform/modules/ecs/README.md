@@ -22,6 +22,8 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_appautoscaling_policy.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/appautoscaling_policy) | resource |
+| [aws_appautoscaling_target.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/appautoscaling_target) | resource |
 | [aws_ecs_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_service.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/ecs_service) | resource |
 | [aws_ecs_task_definition.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/ecs_task_definition) | resource |
