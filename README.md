@@ -21,8 +21,19 @@ go test -coverprofile=coverage.out ./...
 go tool cover -func=coverage.out
 ```
 
-## Usage
+### Deploy Development Server (Docker)
+Deploy deployment server and PosgreSQL DB with `docker-compose`.
+```shell 
+cd .docker
+docker-compose up --build
+
+# Stop the server and database
+docker-compose down
+```
+
 ### Deploy Development Server
+You can also deploy a development server without using `docker-compose`. 
+However, you must provide a database server to connect to.
 ```shell
 cd src
 
@@ -37,6 +48,12 @@ export DB_PORT="5432"
 export DB_SSLMODE="disable"
 
 go run .
+```
+### Deploy Development Server (Docker)
+```shell 
+docker build -f .docker/Dockerfile -t go_api_aws_ecs_rds .
+
+docker run --rm -ti -e BASIC_AUTH_USER="admin" -e BASIC_AUTH_PASSWORD="password" -e DB_USER="admin" -e DB_PASSWORD="password" -e DB_NAME="gorm" -e DB_HOST="localhost" -e DB_PORT="5432" -e DB_SSLMODE="disable" go_api_aws_ecs_rds
 ```
 ### Client Requests
 ```shell
