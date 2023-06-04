@@ -1,0 +1,99 @@
+name: Validate terraform code
+
+on: [pull_request]
+
+env:
+  AWS_IAM_ROLE_ARN_CI: ${{ secrets.AWS_IAM_ROLE_ARN_CI }}
+  AWS_IAM_ROLE_ARN_DEPLOY: ${{ secrets.AWS_IAM_ROLE_ARN_DEPLOY }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  IMAGE_REPO_NAME: ${{ secrets.IMAGE_REPO_NAME }}
+  AWS_IAM_ROLE_SESSION_NAME: githubsession
+  AWS_REGION: 'us-east-1'
+  S3_BUCKET: 'go-api-aws-ecs-rds-tf-state-bucket'
+  BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+  BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+
+jobs:
+  terraform_validation:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      matrix:
+        dir:
+          [
+            'infrastructure/terraform/pre_deployment',
+            'infrastructure/terraform/vpc',
+            'infrastructure/terraform/db',
+            'infrastructure/terraform/ecs',
+          ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # AWS Auth
+      - name: AWS Credentials for CI Account
+        uses: aws-actions/configure-aws-credentials@580afbba8076b302fad6220e95a3a845f32b165a
+        with:
+          role-to-assume: ${{env.AWS_IAM_ROLE_ARN_CI}}
+          role-session-name: ${{env.AWS_IAM_ROLE_SESSION_NAME}}
+          aws-region: ${{env.AWS_REGION}}
+      - name: AWS Credentials for Deployment
+        uses: aws-actions/configure-aws-credentials@580afbba8076b302fad6220e95a3a845f32b165a
+        with:
+          aws-region: ${{env.AWS_REGION}}
+          role-to-assume: ${{env.AWS_IAM_ROLE_ARN_DEPLOY}}
+          role-skip-session-tagging: true
+          role-chaining: true
+
+      # Prepare Terraform Variables
+      #   if: ${{ github.event.pull_request.merged == true }}
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+
+      - name: Generate tfvars for ECS deployment
+        working-directory: 'infrastructure/terraform/ecs'
+        run: |
+          CONTAINER_IMAGE_TAG="${{ steps.get-latest-tag.outputs.tag }}"
+          CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
+
+          echo "basic_auth_password = ${BASIC_AUTH_USER}" > terraform.tfvars
+          echo "basic_auth_user = ${BASIC_AUTH_PASSWORD}" >> terraform.tfvars
+          echo "container_image_uri = ${CONTAINER_IMAGE_URI}" >> terraform.tfvars
+
+      # Terraform Validation
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: '1.0'
+
+      - name: Terraform Init
+        working-directory: ${{ matrix.dir }}
+        run: terraform init
+
+      - name: Terraform Check
+        working-directory: ${{ matrix.dir }}
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        working-directory: ${{ matrix.dir }}
+        run: terraform validate
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v2
+        with:
+          tflint_version: v0.44.1
+
+      - name: Show version
+        working-directory: ${{ matrix.dir }}
+        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --version
+
+      - name: Init TFLint
+        working-directory: ${{ matrix.dir }}
+        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" --init
+
+      - name: Run TFLint
+        working-directory: ${{ matrix.dir }}
+        run: tflint --config "${GITHUB_WORKSPACE}/.github/linters/.tflint.hcl" -f compact

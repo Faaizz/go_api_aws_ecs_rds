@@ -100,6 +100,21 @@ The terraform infrastructure modules need to be deployed in the following order:
 
 
 ## CI/CD
+### Requirements
+The terraform GitHub actions workflows require an OIDC provider to be deployed in an AWS account (ideally a CI account) for GitHub.
+The ARN of 2 IAM roles must also passed as GitHub actions secrets:
+1. `AWS_IAM_ROLE_ARN_CI`: An IAM role (in the CI account) which can be assumed by GitHub after authenticated with the OIDC provider.
+2. `AWS_IAM_ROLE_ARN_DEPLOY`: An IAM role in the deployment account with the required permissions to deploy the resources and a trust policy to allow assumption by the `AWS_IAM_ROLE_ARN_CI` role.
+
 ### Source Code Build & Test
 The [`Test source code`](./.github/workflows/go.yaml) workflow builds and tests the source code on every PR.
 
+### Terraform Validation
+The [`Validate terraform code`](./.github/workflows/infra_validate.yaml) workflow validates terraform configurations and runs TFLint on each infrastructure module.
+The workflow requires the following GitHub actions secrets:
+- [ ] `AWS_IAM_ROLE_ARN_CI`
+- [ ] `AWS_IAM_ROLE_ARN_DEPLOY`
+- [ ] `AWS_ACCOUNT_ID`
+- [ ] `IMAGE_REPO_NAME`: Name of ECR repository for container images (provided as an output of the [`pre_deployment`](./infrastructure/terraform/pre_deployment/README.md) infrastructure module).
+- [ ] `BASIC_AUTH_USER`
+- [ ] `BASIC_AUTH_PASSWORD`
