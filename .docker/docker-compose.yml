@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  go_api_aws_ecs_rds:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    image: go_api_aws_ecs_rds
+    environment:
+      BASIC_AUTH_USER: "admin"
+      BASIC_AUTH_PASSWORD: "password"
+      DB_USER: "admin"
+      DB_PASSWORD: "password"
+      DB_NAME: "gorm"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_SSLMODE: "disable"
+    command: ["/bin/sh", "-c", "sleep 30 && /src/go_api_aws_ecs_rds"]
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+
+  database:
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    environment:
+      POSTGRES_DB: "gorm"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "admin"
+    ports:
+      - 5433:5432
