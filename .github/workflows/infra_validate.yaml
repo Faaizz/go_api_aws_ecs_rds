@@ -59,9 +59,9 @@ jobs:
           CONTAINER_IMAGE_TAG="${{ steps.get-latest-tag.outputs.tag }}"
           CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG"
 
-          echo "basic_auth_password = ${BASIC_AUTH_USER}" > terraform.tfvars
-          echo "basic_auth_user = ${BASIC_AUTH_PASSWORD}" >> terraform.tfvars
-          echo "container_image_uri = ${CONTAINER_IMAGE_URI}" >> terraform.tfvars
+          echo "basic_auth_password = \"${BASIC_AUTH_USER}\"" > terraform.tfvars
+          echo "basic_auth_user = \"${BASIC_AUTH_PASSWORD}\"" >> terraform.tfvars
+          echo "container_image_uri = \"${CONTAINER_IMAGE_URI}\"" >> terraform.tfvars
 
       # Terraform Validation
       - name: Setup Terraform
