@@ -25,7 +25,16 @@ func main() {
 	bc := controller.Book{}
 	controller.BC = &bc
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	handle.Port = port
+
 	router := httprouter.New()
+
+	viewPath := "/view"
+	router.GET(viewPath, handle.View)
 
 	apiPath := "/api/v1"
 
@@ -38,11 +47,6 @@ func main() {
 	router.PUT(bookPath+"/:id", middleware.BasicAuth(handle.BookUpdate))
 	router.DELETE(bookPath+"/:id", middleware.BasicAuth(handle.BookDelete))
 	router.GET(bookPath+"/:id", middleware.BasicAuth(handle.BookRead))
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
 }

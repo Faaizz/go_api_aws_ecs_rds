@@ -40,4 +40,5 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_api_url"></a> [api\_url](#output\_api\_url) | The URL of the API |
+| <a name="output_view_url"></a> [view\_url](#output\_view\_url) | The URL of the view page |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
