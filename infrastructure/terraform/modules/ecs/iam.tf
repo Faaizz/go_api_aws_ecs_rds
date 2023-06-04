@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "task" {
 
 # ECS Service task execution role
 resource "aws_iam_role" "task_exec" {
-  name = local.ecs.task.exec_role.name
+  name = "go-api-exec"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -57,7 +57,7 @@ resource "aws_iam_role" "task_exec" {
 }
 
 resource "aws_iam_policy" "task_exec" {
-  name        = local.ecs.task.exec_role.name
+  name        = "go-api-exec"
   description = "Allow access to CloudWatch Logs and ECR"
 
   policy = jsonencode({

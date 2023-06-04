@@ -2,6 +2,10 @@ variable "container_image_uri" {
   description = "The container image"
   type        = string
 }
+variable "container_port" {
+  description = "The port the container listens on"
+  type        = number
+}
 
 variable "basic_auth_user" {
   description = "The basic auth user"
@@ -29,7 +33,13 @@ variable "db_host" {
 }
 variable "db_port" {
   description = "The database port"
-  type        = number
+  type        = string
+}
+
+
+variable "vpc_id" {
+  description = "The VPC ID"
+  type        = string
 }
 
 variable "ecs_subnets" {

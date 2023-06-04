@@ -3,11 +3,6 @@ data "aws_region" "current" {}
 locals {
   project_name = "go-api"
 
-  ports = {
-    containerPort = 8080
-    hostPort      = 80
-  }
-
   task = {
     name = "backend"
     exec_role = {
@@ -20,8 +15,8 @@ locals {
       name = "backend"
       port_mappings = [
         {
-          containerPort = local.ports.containerPort
-          hostPort      = local.ports.hostPort
+          containerPort = var.container_port
+          hostPort      = var.container_port
         }
       ]
     }
@@ -38,7 +33,7 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family = var.task_name
+  family = local.project_name
   container_definitions = jsonencode([
     {
       name         = local.task.container.name
@@ -54,7 +49,7 @@ resource "aws_ecs_task_definition" "this" {
           "awslogs-stream-prefix" : "awslogs-go-api"
         }
       }
-      cpu = 992
+      cpu = 1024
       environment = [
         {
           Name  = "BASIC_AUTH_USER"
@@ -86,7 +81,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
           Name  = "DB_SSLMODE"
-          Value = "enable"
+          Value = "disable"
         },
       ]
     }
@@ -97,6 +92,11 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = 1024
   memory                   = 2048
   requires_compatibilities = ["FARGATE"]
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
 }
 
 resource "aws_ecs_service" "this" {
@@ -113,8 +113,8 @@ resource "aws_ecs_service" "this" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.ecs.arn
+    target_group_arn = aws_lb_target_group.this.arn
     container_name   = local.task.container.name
-    container_port   = local.ports.hostPort
+    container_port   = var.container_port
   }
 }
