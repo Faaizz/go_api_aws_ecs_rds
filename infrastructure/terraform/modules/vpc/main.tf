@@ -78,11 +78,11 @@ resource "aws_security_group" "database" {
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    description = "Allow Postgres"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "TCP"
-    cidr_blocks = [var.cidr]
+    description     = "Allow Postgres"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "TCP"
+    security_groups = [aws_security_group.ecs.id]
   }
 
   egress {
