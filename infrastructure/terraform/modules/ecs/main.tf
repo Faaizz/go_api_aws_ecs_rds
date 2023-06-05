@@ -104,12 +104,13 @@ resource "aws_ecs_service" "this" {
   cluster         = aws_ecs_cluster.this.id
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.this.arn
-  desired_count   = 1
+  desired_count   = 2
+
+  deployment_minimum_healthy_percent = 25
 
   network_configuration {
     subnets         = var.ecs_subnets
     security_groups = var.ecs_security_groups
-    # assign_public_ip = true
   }
 
   load_balancer {
