@@ -23,6 +23,10 @@ pre-commit install
 ## Testing
 ### Generating Mocks
 ```shell
+cd src 
+
+go install github.com/vektra/mockery/v2@v2.20.0
+
 go generate ./...
 ```
 ### Running Tests
@@ -61,6 +65,11 @@ export DB_SSLMODE="disable"
 go run .
 ```
 
+export BASIC_AUTH_USER="cybersonic"
+export BASIC_AUTH_PASSWORD="PzjS/kSaMngndTC81y1p5A=="
+
+export BASE_URL="http://ecs-2138833276.us-east-1.elb.amazonaws.com"
+
 ## Usage
 ### Client Requests
 ```shell
@@ -76,37 +85,37 @@ export HEALTH_URL="${API_URL}/healthz"
 export BOOK_URL="${API_URL}/book"
 
 # Check health
-curl -v -X GET "${HEALTH_URL}"
+curl -v "${HEALTH_URL}"
 
 # Show API Documentation
-curl -v -X GET "${DOCS_URL}"
+curl -v "${DOCS_URL}"
 
 # List books
-curl -v -X GET "${BOOK_URL}"
+curl -v "${BOOK_URL}" | jq
 
 # Create book
 curl -v -X POST \
   -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Power of Geography","author":"Tim Marshall","year":2009}' \
-  "${BOOK_URL}"
+  "${BOOK_URL}" | jq
 
 # Read book
-curl -v -X GET \
+curl -v \
   -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
-  "${BOOK_URL}/ID"
+  "${BOOK_URL}/ID" | jq
 
 # Update book
 curl -v -X PUT \
   -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Gods are to blame","author":"John Doe","year":1992}' \
-  "${BOOK_URL}/ID"
+  "${BOOK_URL}/ID" | jq
 
 # Delete book
 curl -v -X DELETE \
   -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
-  "${BOOK_URL}/ID"
+  "${BOOK_URL}/ID" | jq
 ```
 
 ## CI/CD
