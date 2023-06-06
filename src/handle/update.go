@@ -39,7 +39,7 @@ func BookUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	book, err := controller.BC.UpdateBook(id, br.Title, br.Author, br.Year)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, "failed to update book", http.StatusInternalServerError)
+		http.Error(w, "failed to update book", http.StatusNotFound)
 		return
 	}
 
