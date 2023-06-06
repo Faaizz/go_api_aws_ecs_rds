@@ -107,6 +107,7 @@ resource "aws_ecs_service" "this" {
   desired_count   = 2
 
   deployment_minimum_healthy_percent = 25
+  health_check_grace_period_seconds  = 30
 
   network_configuration {
     subnets         = var.ecs_subnets
@@ -122,7 +123,7 @@ resource "aws_ecs_service" "this" {
 
 resource "aws_appautoscaling_target" "this" {
   max_capacity       = 10
-  min_capacity       = 1
+  min_capacity       = 2
   resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.this.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
