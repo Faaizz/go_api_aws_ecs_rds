@@ -99,11 +99,13 @@ jobs:
         working-directory: 'infrastructure/terraform/ecs'
         run: |
           CONTAINER_IMAGE_TAG="${{ steps.get-latest-tag.outputs.tag }}"
-          CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CONTAINER_IMAGE_TAG"
+          CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/${IMAGE_REPO_NAME}:${CONTAINER_IMAGE_TAG}"
+          WEB_CONTAINER_IMAGE_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/${IMAGE_REPO_NAME}:web-v1.0.0"
 
           echo "basic_auth_user = \"${BASIC_AUTH_USER}\"" > terraform.tfvars
           echo "basic_auth_password = \"${BASIC_AUTH_PASSWORD}\"" >> terraform.tfvars
           echo "container_image_uri = \"${CONTAINER_IMAGE_URI}\"" >> terraform.tfvars
+          echo "web_container_image_uri = \"${WEB_CONTAINER_IMAGE_URI}\"" >> terraform.tfvars
 
       # Terraform
       - name: Setup Terraform

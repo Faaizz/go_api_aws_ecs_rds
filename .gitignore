@@ -64,3 +64,9 @@ code/
 *coverage.out
 # build output
 src/go_api_aws_ecs_rds
+
+notes.md
+
+# Node
+*node_modules*
+*.next*

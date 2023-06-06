@@ -2,7 +2,19 @@ version: '3'
 
 services:
 
-  go_api_aws_ecs_rds:
+  web:
+    build:
+      context: ..
+      dockerfile: .docker/web.Dockerfile
+    image: go_api_aws_ecs_rds_web
+    environment:
+      BOOK_URL: "http://api:8080/api/v1/book"
+    ports:
+      - 8089:3000
+    depends_on:
+      - api
+
+  api:
     build:
       context: ..
       dockerfile: .docker/Dockerfile
