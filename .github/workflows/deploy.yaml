@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'infrastructure/**'
 
 env:
   AWS_IAM_ROLE_ARN_CI: ${{ secrets.AWS_IAM_ROLE_ARN_CI }}
@@ -71,9 +72,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    defaults:
-      run:
-        working-directory: ./infrastructure/terraform/ecs
 
     steps:
       - name: Checkout
@@ -113,11 +111,23 @@ jobs:
         with:
           terraform_version: '1.0'
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Update VPC
+        working-directory: 'infrastructure/terraform/vpc'
+        run: |
+          terraform init 
+          terraform plan -out=tfplan -input=false
+          terraform apply -auto-approve tfplan
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan -input=false
+      - name: Update DB
+        working-directory: 'infrastructure/terraform/db'
+        run: |
+          terraform init 
+          terraform plan -out=tfplan -input=false
+          terraform apply -auto-approve tfplan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      - name: Update API Deployment
+        working-directory: 'infrastructure/terraform/ecs'
+        run: |
+          terraform init 
+          terraform plan -out=tfplan -input=false
+          terraform apply -auto-approve tfplan
