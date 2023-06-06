@@ -9,5 +9,6 @@ module "vpc" {
   name = "${local.project}-vpc"
   cidr = local.cidr
 
-  container_port = 8080
+  container_port     = 8080
+  web_container_port = 3000
 }

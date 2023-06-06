@@ -57,9 +57,16 @@ resource "aws_security_group" "ecs" {
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    description     = "Allow HTTP"
+    description     = "Allow api container traffic"
     from_port       = var.container_port
     to_port         = var.container_port
+    protocol        = "TCP"
+    security_groups = [aws_security_group.alb.id]
+  }
+  ingress {
+    description     = "Allow web container traffic"
+    from_port       = var.web_container_port
+    to_port         = var.web_container_port
     protocol        = "TCP"
     security_groups = [aws_security_group.alb.id]
   }

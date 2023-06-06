@@ -5,5 +5,5 @@ output "api_url" {
 
 output "view_url" {
   description = "The URL of the view page"
-  value       = "http://${module.ecs.alb_dns_name}/view"
+  value       = "http://${module.ecs.alb_dns_name}"
 }

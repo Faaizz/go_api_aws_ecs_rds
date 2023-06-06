@@ -36,6 +36,7 @@
 | <a name="input_cidr"></a> [cidr](#input\_cidr) | The CIDR block of the VPC | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | The port the container listens on | `number` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The name of the VPC | `string` | n/a | yes |
+| <a name="input_web_container_port"></a> [web\_container\_port](#input\_web\_container\_port) | The port the web container listens on | `number` | n/a | yes |
 
 ## Outputs
 

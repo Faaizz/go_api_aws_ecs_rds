@@ -2,6 +2,10 @@ variable "container_image_uri" {
   description = "The container image"
   type        = string
 }
+variable "web_container_image_uri" {
+  description = "The web container image"
+  type        = string
+}
 variable "basic_auth_user" {
   description = "The basic auth user"
   type        = string

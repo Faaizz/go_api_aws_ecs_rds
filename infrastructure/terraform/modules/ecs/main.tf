@@ -20,6 +20,15 @@ locals {
         }
       ]
     }
+    web_container = {
+      name = "web"
+      port_mappings = [
+        {
+          containerPort = var.web_container_port
+          hostPort      = var.web_container_port
+        }
+      ]
+    }
   }
 }
 
@@ -49,7 +58,7 @@ resource "aws_ecs_task_definition" "this" {
           "awslogs-stream-prefix" : "awslogs-go-api"
         }
       }
-      cpu = 1024
+      cpu = 512
       environment = [
         {
           Name  = "BASIC_AUTH_USER"
@@ -82,6 +91,28 @@ resource "aws_ecs_task_definition" "this" {
         {
           Name  = "DB_SSLMODE"
           Value = "prefer"
+        },
+      ]
+    },
+    {
+      name         = local.task.web_container.name
+      image        = var.web_container_image_uri
+      essential    = true
+      portMappings = local.task.web_container.port_mappings
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-create-group" : "true"
+          "awslogs-group" : "awslogs-go-web"
+          "awslogs-region" : data.aws_region.current.name
+          "awslogs-stream-prefix" : "awslogs-go-web"
+        }
+      }
+      cpu = 512
+      environment = [
+        {
+          Name  = "BOOK_URL"
+          Value = "http://localhost:${local.task.container.port_mappings[0].containerPort}/api/v1/book"
         },
       ]
     }
@@ -118,6 +149,12 @@ resource "aws_ecs_service" "this" {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = local.task.container.name
     container_port   = var.container_port
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.web.arn
+    container_name   = local.task.web_container.name
+    container_port   = var.web_container_port
   }
 }
 

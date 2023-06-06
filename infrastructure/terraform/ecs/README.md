@@ -34,6 +34,7 @@
 | <a name="input_basic_auth_password"></a> [basic\_auth\_password](#input\_basic\_auth\_password) | The basic auth password | `string` | n/a | yes |
 | <a name="input_basic_auth_user"></a> [basic\_auth\_user](#input\_basic\_auth\_user) | The basic auth user | `string` | n/a | yes |
 | <a name="input_container_image_uri"></a> [container\_image\_uri](#input\_container\_image\_uri) | The container image | `string` | n/a | yes |
+| <a name="input_web_container_image_uri"></a> [web\_container\_image\_uri](#input\_web\_container\_image\_uri) | The web container image | `string` | n/a | yes |
 
 ## Outputs
 

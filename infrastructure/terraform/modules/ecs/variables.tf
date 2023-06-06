@@ -6,6 +6,14 @@ variable "container_port" {
   description = "The port the container listens on"
   type        = number
 }
+variable "web_container_image_uri" {
+  description = "The web container image"
+  type        = string
+}
+variable "web_container_port" {
+  description = "The port the web container listens on"
+  type        = number
+}
 
 variable "basic_auth_user" {
   description = "The basic auth user"
