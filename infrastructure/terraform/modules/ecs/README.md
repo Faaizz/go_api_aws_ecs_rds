@@ -35,7 +35,9 @@ No modules.
 | [aws_iam_role_policy_attachment.task_exec](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lb.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/lb) | resource |
 | [aws_lb_listener.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/lb_listener) | resource |
+| [aws_lb_listener_rule.api](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/lb_target_group) | resource |
+| [aws_lb_target_group.web](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/resources/lb_target_group) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.1.0/docs/data-sources/region) | data source |
 
 ## Inputs
@@ -56,6 +58,8 @@ No modules.
 | <a name="input_ecs_security_groups"></a> [ecs\_security\_groups](#input\_ecs\_security\_groups) | The ECS security\_groups | `list(string)` | n/a | yes |
 | <a name="input_ecs_subnets"></a> [ecs\_subnets](#input\_ecs\_subnets) | The ECS subnets | `list(string)` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID | `string` | n/a | yes |
+| <a name="input_web_container_image_uri"></a> [web\_container\_image\_uri](#input\_web\_container\_image\_uri) | The web container image | `string` | n/a | yes |
+| <a name="input_web_container_port"></a> [web\_container\_port](#input\_web\_container\_port) | The port the web container listens on | `number` | n/a | yes |
 
 ## Outputs
 

@@ -15,3 +15,7 @@ variable "container_port" {
   description = "The port the container listens on"
   type        = number
 }
+variable "web_container_port" {
+  description = "The port the web container listens on"
+  type        = number
+}
