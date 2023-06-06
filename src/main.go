@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+	log.Println("Initializing...")
 	db, err := controller.SetupDB()
 	if err != nil {
 		panic(err)
@@ -51,5 +52,6 @@ func main() {
 	router.DELETE(bookPath+"/:id", middleware.BasicAuth(handle.BookDelete))
 	router.GET(bookPath+"/:id", middleware.BasicAuth(handle.BookRead))
 
+	log.Println("Starting server...")
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
 }
