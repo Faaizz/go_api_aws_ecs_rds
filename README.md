@@ -1,6 +1,17 @@
 # Go API on AWS ECS
 Golang API deployed on Amazon ECS with data persistence on Amazon RDS.
 
+## Infrastructure 
+### Architecture
+![architecture](./docs/architecture.png)
+
+### Deployment Order
+The terraform infrastructure modules need to be deployed in the following order:
+1. [`pre_deployment`](./infrastructure/terraform/pre_deployment/README.md): S3 bucket and DynamoDB table for terraform backends, ECR repository for container images.
+2. [`vpc`](./infrastructure/terraform/vpc/README.md): VPC infrastructure and SGs.
+3. [`db`](./infrastructure/terraform/db/README.md): RDS PostgreSQL database.
+4. [`ecs`](./infrastructure/terraform/ecs/README.md): ECS cluster, service, and task definition, ALB for load balancing.
+
 
 ## Development Environment
 ### Pre-Commit Hooks
@@ -94,17 +105,6 @@ curl -v -X DELETE \
   -u "admin:password" \
   "${BOOK_URL}/ID"
 ```
-
-## Infrastructure 
-### Architecture
-
-### Deployment Order
-The terraform infrastructure modules need to be deployed in the following order:
-1. [`pre_deployment`](./infrastructure/terraform/pre_deployment/README.md): S3 bucket and DynamoDB table for terraform backends, ECR repository for container images.
-2. [`vpc`](./infrastructure/terraform/vpc/README.md): VPC infrastructure and SGs.
-3. [`db`](./infrastructure/terraform/db/README.md): RDS PostgreSQL database.
-4. [`ecs`](./infrastructure/terraform/ecs/README.md): ECS cluster, service, and task definition, ALB for load balancing and SSL termination.
-
 
 ## CI/CD
 ### Requirements
