@@ -36,6 +36,9 @@ func main() {
 	viewPath := "/view"
 	router.GET(viewPath, handle.View)
 
+	apiDocsPath := "/api-docs"
+	router.GET(apiDocsPath, handle.ApiDocs)
+
 	apiPath := "/api/v1"
 
 	healthPath := apiPath + "/healthz"
