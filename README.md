@@ -64,6 +64,9 @@ go run .
 ## Usage
 ### Client Requests
 ```shell
+export BASIC_AUTH_USER="admin"
+export BASIC_AUTH_PASSWORD="password"
+
 export BASE_URL="http://localhost:8080"
 
 export API_URL="${BASE_URL}/api/v1"
@@ -83,26 +86,26 @@ curl -v -X GET "${BOOK_URL}"
 
 # Create book
 curl -v -X POST \
-  -u "admin:password" \
+  -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Power of Geography","author":"Tim Marshall","year":2009}' \
   "${BOOK_URL}"
 
 # Read book
 curl -v -X GET \
-  -u "admin:password" \
+  -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   "${BOOK_URL}/ID"
 
 # Update book
 curl -v -X PUT \
-  -u "admin:password" \
+  -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   -H "Content-Type: application/json" \
   --data '{"title":"The Gods are to blame","author":"John Doe","year":1992}' \
   "${BOOK_URL}/ID"
 
 # Delete book
 curl -v -X DELETE \
-  -u "admin:password" \
+  -u "${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}" \
   "${BOOK_URL}/ID"
 ```
 
