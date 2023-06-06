@@ -17,6 +17,7 @@ func ApiDocs(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		http.Error(w, "could not read api docs", http.StatusNotFound)
 		return
 	}
+	w = addHeaders(w)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintln(w, string(data))
 }

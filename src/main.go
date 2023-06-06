@@ -30,13 +30,8 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	handle.Port = port
 
 	router := httprouter.New()
-
-	viewPath := "/view"
-	router.GET(viewPath, handle.View)
-
 	apiDocsPath := "/api-docs"
 	router.GET(apiDocsPath, handle.ApiDocs)
 
