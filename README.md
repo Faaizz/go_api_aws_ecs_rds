@@ -65,11 +65,6 @@ export DB_SSLMODE="disable"
 go run .
 ```
 
-export BASIC_AUTH_USER="cybersonic"
-export BASIC_AUTH_PASSWORD="PzjS/kSaMngndTC81y1p5A=="
-
-export BASE_URL="http://ecs-2138833276.us-east-1.elb.amazonaws.com"
-
 ## Usage
 ### Client Requests
 ```shell
